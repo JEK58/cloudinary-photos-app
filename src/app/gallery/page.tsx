@@ -6,6 +6,7 @@ import { SearchForm } from "./search-form";
 export type SearchResult = {
   public_id: string;
   tags: string[];
+  resource_type: string;
 };
 
 export default async function GalleryPage({
@@ -16,7 +17,7 @@ export default async function GalleryPage({
   };
 }) {
   const results = (await cloudinary.v2.search
-    .expression(`resource_type:image${search ? ` AND tags=${search}` : ""}`)
+    .expression(`resource_type:image OR resource_type:video`)
     .sort_by("created_at", "desc")
     .with_field("tags")
     .max_results(30)
